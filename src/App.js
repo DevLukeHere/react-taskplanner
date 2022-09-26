@@ -1,10 +1,11 @@
+import React from "react";
+import { Box } from "@mui/material";
+import Home from "./pages/Home";
 
-function App() {
+export default function App() {
   return (
-    <div>
-      <h1>Hello World</h1>
-    </div>
+    <Box sx={{ backgroundColor: "#f5f5f5" }}>
+      <Home />
+    </Box>
   );
 }
-
-export default App;
