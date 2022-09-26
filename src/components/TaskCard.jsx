@@ -39,6 +39,10 @@ export default function TaskCard() {
     setExpanded(!expanded);
   };
 
+  const handleCopyClick = (id) => {
+    navigator.clipboard.writeText(id);
+  };
+
   return (
     <Fragment>
       {tasks.length > 0 ? (
@@ -48,7 +52,11 @@ export default function TaskCard() {
               subheader={`id: ${task.id}`}
               action={
                 <Tooltip title="copy task ID">
-                  <IconButton>
+                  <IconButton
+                    onClick={() => {
+                      handleCopyClick(task.id);
+                    }}
+                  >
                     <ContentCopyIcon />
                   </IconButton>
                 </Tooltip>
