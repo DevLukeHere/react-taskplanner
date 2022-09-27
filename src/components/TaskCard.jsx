@@ -14,7 +14,12 @@ import {
   Radio,
   Tooltip,
   Box,
+  Divider,
+  Chip,
+  FormGroup,
+  Checkbox,
 } from "@mui/material";
+import Grid2 from "@mui/material/Unstable_Grid2";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useTasksContext } from "../hooks/useTasksContext";
@@ -31,7 +36,7 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function TaskCard() {
-  const { tasks } = useTasksContext();
+  const { tasks, subTasks } = useTasksContext();
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -62,30 +67,27 @@ export default function TaskCard() {
               }
             />
             <CardContent>
+              <Grid2
+                container
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Chip
+                  sx={{ mb: 1 }}
+                  label="in progress"
+                  variant="outlined"
+                  size="small"
+                  color="primary"
+                />
+                <FormGroup>
+                  <FormControlLabel control={<Checkbox />} label="Done" />
+                </FormGroup>
+              </Grid2>
               <Typography variant="body2" color="text.secondary">
                 {task.title}
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
-              <FormControl>
-                <RadioGroup
-                  sx={{ flexDirection: "row" }}
-                  aria-labelledby="task-status-group"
-                  defaultValue="inProgress"
-                  name="status-buttons-group"
-                >
-                  <FormControlLabel
-                    value="inProgress"
-                    control={<Radio />}
-                    label="In Progress"
-                  />
-                  <FormControlLabel
-                    value="done"
-                    control={<Radio />}
-                    label="Done"
-                  />
-                </RadioGroup>
-              </FormControl>
               <ExpandMore
                 expand={expanded}
                 onClick={handleExpandClick}
@@ -95,14 +97,39 @@ export default function TaskCard() {
                 <ExpandMoreIcon />
               </ExpandMore>
             </CardActions>
+
+            <Divider variant="middle" />
+
             <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <CardContent>
-                <Typography paragraph>Method:</Typography>
-                <Typography paragraph>
-                  Heat 1/2 cup of the broth in a pot until simmering, add
-                  saffron and set aside for 10 minutes.
-                </Typography>
-              </CardContent>
+              {subTasks.map((subTask) =>
+                subTask.parent_id === task.id ? (
+                  <Fragment key={subTask.id}>
+                    <CardContent>
+                      <Grid2
+                        container
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Chip
+                          sx={{ mb: 1 }}
+                          label="in progress"
+                          variant="outlined"
+                          size="small"
+                          color="primary"
+                        />
+                        <FormGroup>
+                          <FormControlLabel
+                            control={<Checkbox />}
+                            label="Done"
+                          />
+                        </FormGroup>
+                      </Grid2>
+                      <Typography variant="body2">{subTask.title}</Typography>
+                    </CardContent>
+                    <Divider variant="middle" />
+                  </Fragment>
+                ) : null
+              )}
             </Collapse>
           </Card>
         ))

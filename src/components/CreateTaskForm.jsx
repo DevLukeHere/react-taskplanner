@@ -7,14 +7,14 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useTasksContext } from "../hooks/useTasksContext";
 
 export default function CreateTaskForm() {
   const [open, setOpen] = useState(false);
-  const { dispatch, addTask } = useTasksContext();
+  const { dispatch, addTask, addSubTask } = useTasksContext();
   const [title, setTitle] = useState("");
   const [parentId, setParentId] = useState("");
 
@@ -34,11 +34,15 @@ export default function CreateTaskForm() {
     //   title: title,
     // };
 
-    addTask(title, parentId);
+    if (parentId) {
+      addSubTask(title, parentId);
+    } else {
+      addTask(title);
+    }
+
     setTitle("");
     setParentId("");
     setOpen(false);
-
     // dispatch({ type: "CREATE_TASKS", payload: task });
   };
 

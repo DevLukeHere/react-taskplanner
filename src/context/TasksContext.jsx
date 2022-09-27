@@ -5,13 +5,18 @@ export const TasksContext = createContext();
 
 export const TasksContextProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
+  const [subTasks, setSubTasks] = useState([]);
 
-  const addTask = (title, parentId) => {
-    setTasks([...tasks, { title, parentId, id: uuidv4() }]);
+  const addTask = (title) => {
+    setTasks([...tasks, { title, id: uuidv4() }]);
+  };
+
+  const addSubTask = (title, parentId) => {
+    setSubTasks([...subTasks, { title, parent_id: parentId, id: uuidv4() }]);
   };
 
   return (
-    <TasksContext.Provider value={{ tasks, addTask }}>
+    <TasksContext.Provider value={{ tasks, subTasks, addTask, addSubTask }}>
       {children}
     </TasksContext.Provider>
   );
