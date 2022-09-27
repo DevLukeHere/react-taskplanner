@@ -6,12 +6,12 @@ import {
   Radio,
   FormControl,
 } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 
 export default function Filters() {
   return (
     <Box>
-      <Typography variant="subtitle1">Filter by:</Typography>
+      <Typography variant="subtitle1">Filter tasks by:</Typography>
       <FormControl>
         <RadioGroup
           sx={{ flexDirection: "row" }}
