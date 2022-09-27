@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useContext } from "react";
+import React, { useState, Fragment } from "react";
 import { styled } from "@mui/material/styles";
 import {
   Card,
@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import AddIcon from "@mui/icons-material/Add";
 import { useTasksContext } from "../hooks/useTasksContext";
 
 const ExpandMore = styled((props) => {
@@ -109,10 +108,7 @@ export default function TaskCard() {
         ))
       ) : (
         <Box sx={{ textAlign: "center" }}>
-          <Typography>No task pending at the moment</Typography>
-          <IconButton>
-            <AddIcon />
-          </IconButton>
+          <Typography variant="body1">No task pending at the moment</Typography>
         </Box>
       )}
     </Fragment>

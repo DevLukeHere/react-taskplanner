@@ -7,7 +7,7 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
+  DialogTitle
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useTasksContext } from "../hooks/useTasksContext";
@@ -50,7 +50,7 @@ export default function CreateTaskForm() {
         endIcon={<AddIcon />}
         sx={{ borderRadius: "1.5rem", m: 1 }}
       >
-        Create Task
+        Add Task
       </Button>
       <Dialog open={open} onClose={handleClose} sx={{ borderRadius: "1rem" }}>
         <DialogTitle>Create Task</DialogTitle>
