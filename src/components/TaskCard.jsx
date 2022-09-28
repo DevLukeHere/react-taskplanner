@@ -135,7 +135,7 @@ export default function TaskCard() {
         ))
       ) : (
         <Box sx={{ textAlign: "center" }}>
-          <Typography variant="body1">No task pending at the moment</Typography>
+          <Typography variant="body1">No tasks at the moment</Typography>
         </Box>
       )}
     </Fragment>
