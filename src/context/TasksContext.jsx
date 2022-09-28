@@ -7,8 +7,23 @@ export const TasksContextProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
   const [subTasks, setSubTasks] = useState([]);
 
-  const addTask = (title) => {
-    setTasks([...tasks, { title, id: uuidv4() }]);
+  const addTask = (title, parentId) => {
+    setTasks([
+      ...tasks,
+      { id: uuidv4(), title, parent_id: parentId, status: "in_progress" },
+    ]);
+  };
+
+  const updateTaskStatus = (id, checked) => {
+    const updatedTask = tasks.map((task) => {
+      if (task.id === id) {
+        return { ...task, status: checked ? "done" : "in_progress" };
+      }
+
+      return task;
+    });
+
+    setTasks(updatedTask);
   };
 
   const addSubTask = (title, parentId) => {
@@ -16,7 +31,9 @@ export const TasksContextProvider = ({ children }) => {
   };
 
   return (
-    <TasksContext.Provider value={{ tasks, subTasks, addTask, addSubTask }}>
+    <TasksContext.Provider
+      value={{ tasks, subTasks, addTask, addSubTask, updateTaskStatus }}
+    >
       {children}
     </TasksContext.Provider>
   );

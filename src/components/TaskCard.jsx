@@ -36,7 +36,7 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function TaskCard() {
-  const { tasks, subTasks } = useTasksContext();
+  const { tasks, subTasks, updateTaskStatus } = useTasksContext();
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -47,13 +47,19 @@ export default function TaskCard() {
     navigator.clipboard.writeText(id);
   };
 
+  const handleChange = (e, id) => {
+    const checked = e.target.checked;
+
+    updateTaskStatus(id, checked);
+  };
+
   return (
     <Fragment>
       {tasks.length > 0 ? (
         tasks.map((task) => (
           <Card sx={{ m: 1, borderRadius: "1rem" }} key={task.id}>
             <CardHeader
-              subheader={`id: ${task.id}`}
+              subheader={`ID: ${task.id}`}
               action={
                 <Tooltip title="copy task ID">
                   <IconButton
@@ -72,22 +78,34 @@ export default function TaskCard() {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Chip
-                  sx={{ mb: 1 }}
-                  label="in progress"
-                  variant="outlined"
-                  size="small"
-                  color="primary"
-                />
+                <Grid2 container gap={1}>
+                  <Typography variant="body1">Task status:</Typography>
+                  <Chip
+                    sx={{ mb: 1 }}
+                    label={task.status}
+                    variant="outlined"
+                    size="small"
+                    color="primary"
+                  />
+                </Grid2>
                 <FormGroup>
-                  <FormControlLabel control={<Checkbox />} label="Done" />
+                  <FormControlLabel
+                    control={
+                      <Checkbox onChange={(e) => handleChange(e, task.id)} />
+                    }
+                    label="Done"
+                  />
                 </FormGroup>
               </Grid2>
+              <Typography variant="body2" color="text.secondary">
+                parent ID: {task.parent_id}
+              </Typography>
               <Typography variant="body2" color="text.secondary">
                 {task.title}
               </Typography>
             </CardContent>
-            <CardActions disableSpacing>
+
+            {/* <CardActions disableSpacing>
               <ExpandMore
                 expand={expanded}
                 onClick={handleExpandClick}
@@ -96,11 +114,11 @@ export default function TaskCard() {
               >
                 <ExpandMoreIcon />
               </ExpandMore>
-            </CardActions>
+            </CardActions> */}
 
-            <Divider variant="middle" />
+            {/* <Divider variant="middle" /> */}
 
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
+            {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
               {subTasks.map((subTask) =>
                 subTask.parent_id === task.id ? (
                   <Fragment key={subTask.id}>
@@ -130,7 +148,7 @@ export default function TaskCard() {
                   </Fragment>
                 ) : null
               )}
-            </Collapse>
+            </Collapse> */}
           </Card>
         ))
       ) : (

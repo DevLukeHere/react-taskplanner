@@ -34,11 +34,7 @@ export default function CreateTaskForm() {
     //   title: title,
     // };
 
-    if (parentId) {
-      addSubTask(title, parentId);
-    } else {
-      addTask(title);
-    }
+    addTask(title, parentId);
 
     setTitle("");
     setParentId("");
