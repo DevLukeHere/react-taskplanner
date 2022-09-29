@@ -14,7 +14,7 @@ import { useTasksContext } from "../hooks/useTasksContext";
 
 export default function CreateTaskForm() {
   const [open, setOpen] = useState(false);
-  const { dispatch, addTask, addSubTask } = useTasksContext();
+  const { dispatch, addTask } = useTasksContext();
   const [title, setTitle] = useState("");
   const [parentId, setParentId] = useState("");
 
