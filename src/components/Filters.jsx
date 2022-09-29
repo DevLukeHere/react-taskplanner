@@ -7,8 +7,17 @@ import {
   FormControl,
 } from "@mui/material";
 import React from "react";
+import { useTasksContext } from "../hooks/useTasksContext";
 
 export default function Filters() {
+  const { updateFilterStatus } = useTasksContext();
+
+  const handleChange = (e) => {
+    const status = e.target.value
+    
+    updateFilterStatus(status);
+  };
+
   return (
     <Box>
       <Typography variant="subtitle1">Filter tasks by:</Typography>
@@ -16,11 +25,12 @@ export default function Filters() {
         <RadioGroup
           sx={{ flexDirection: "row" }}
           aria-labelledby="task-status-group"
-          defaultValue="inProgress"
+          defaultValue="in_progress"
           name="status-buttons-group"
+          onChange={handleChange}
         >
           <FormControlLabel
-            value="inProgress"
+            value="in_progress"
             control={<Radio />}
             label="In Progress"
           />
