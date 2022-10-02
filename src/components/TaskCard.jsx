@@ -36,7 +36,7 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function TaskCard() {
-  const { tasks, subTasks, updateTaskStatus } = useTasksContext();
+  const { tasks, updateTaskStatus } = useTasksContext();
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
