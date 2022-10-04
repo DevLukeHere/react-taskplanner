@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Box,
@@ -14,9 +14,10 @@ import { useTasksContext } from "../hooks/useTasksContext";
 
 export default function CreateTaskForm() {
   const [open, setOpen] = useState(false);
-  const { dispatch, addTask } = useTasksContext();
+  const { addTask, tasks } = useTasksContext();
   const [title, setTitle] = useState("");
   const [parentId, setParentId] = useState("");
+  let taskCounts = {};
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -29,18 +30,26 @@ export default function CreateTaskForm() {
   };
 
   const handleSubmit = () => {
-    // const task = {
-    //   id: parentId,
-    //   title: title,
-    // };
-
     addTask(title, parentId);
 
     setTitle("");
     setParentId("");
     setOpen(false);
-    // dispatch({ type: "CREATE_TASKS", payload: task });
   };
+  
+  useEffect(() => {
+    tasks.map((task) => {
+      return (taskCounts[task.id] = {
+        total_subtasks: 0,
+        total_subtask_done: 0,
+        status: task.status,
+      });
+    });
+
+    return () => {
+      //
+    };
+  }, [tasks]);
 
   return (
     <Box sx={{ textAlign: "center" }}>
