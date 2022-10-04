@@ -1,40 +1,39 @@
-# Getting Started with Create React App
+# Limitations and Improvements for the Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+At the time of development one of the additions to allow subtasks to be nested under a parent task was proving to be 
+a challenge to implement. In order to achieve this, a potential flow/algorithm that I was trying to implement is as follows:-
 
-## Available Scripts
+Task A (parent) => Task B (subtask) => Task C (subtask)
 
-In the project directory, you can run:
+Assuming the above is the current task flow that was added by a user to the application. I would have a local variable and a
+task object which are:-
 
-### `npm start`
+let taskCounts = {}
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+task = {id, title, parent_id, parent_ids, status}
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+When Task A is created, it will be added to the local variable:-
 
-### `npm test`
+task A = {id: 123, title: Task A, parent_id: "", parent_ids: [], "in_progress"} 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+taskCounts = {123: {total_subtasks: 0, total_subtasks_done: 0, status: "in_progress"}}
 
-### `npm run build`
+When Task B is created but with the addition of a parent ID from Task A, it will also be added to taskCounts and will be updated:-
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+task B = {id: 456, title: Task B, parent_id: "123", parent_ids: [123], "in_progress"}
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+taskCounts = {123: {total_subtasks: 1, total_subtasks_done: 0, status: "in_progress"}, 456: {total_subtasks: 0, total_subtasks_done: 0, status: "in_progress"}}
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+When Task C is created but with the addition of a parent ID from Task B, it will also be added to the taskCounts and will be updated:-
 
-### `npm run eject`
+task C = {id: 789, title: Task C, parent_id: "456", parent_ids: [123, 456], "in_progress"}
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+taskCounts = {123: {total_subtasks: 2, total_subtasks_done: 0, status: "in_progress"}, 456: {total_subtasks: 1, total_subtasks_done: 0, status: "in_progress"}, 789: {total_subtasks: 0, total_subtasks_done: 0, status: "in_progress"}}
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This process of addition will repeat until the desired amount of subtasks are added. Based on the taskCounts variable we are able to determine the amount of tasks completed/done and update it's status. For example, if Task C has been checked:-
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+taskCounts = {123: {total_subtasks: 2, total_subtasks_done: 1, status: "in_progress"}, 456: {total_subtasks: 1, total_subtasks_done: 1, status: "in_progress"}, 789: {total_subtasks: 0, total_subtasks_done: 0, status: "completed"}}
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+task C = {id: 789, title: Task C, parent_id: "456", parent_ids: [123, 456], "completed"}
+
+Based on the principle, taskCounts will be updated accordingly and will prevent a circular dependency.
